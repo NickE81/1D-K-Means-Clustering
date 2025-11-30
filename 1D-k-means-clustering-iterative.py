@@ -71,6 +71,8 @@ def main():
     assignments: list[int] = get_assignments(input_data, centres)
     # Colour the points based on their cluster
     colours: list[str] = get_colours(assignments, number_of_inputs)
+    graph_data(input_data, centres, colours, number_of_centres, number_of_inputs)
+
 
     current_assignments: list[int] = None
     new_assignments: list[int] = assignments
