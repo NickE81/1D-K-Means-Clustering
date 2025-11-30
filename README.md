@@ -23,7 +23,7 @@ The following Python packages were used in this project:
 
 There are two separate Python files for this project.
 
-The first is the iterative file, which shows the iterative process of the K-Means algorithm at each step
+The first is the iterative file, which shows the iterative process of the K-Means algorithm at each step.
 
 The second is the optimal file, which performs the K-Means clustering a set number of times for each number of clusters/centres in the given range, and saves an image with the optimal assignment for each number of clusters, based on the minimum sum distances of inputs to their cluster's centre.
 
