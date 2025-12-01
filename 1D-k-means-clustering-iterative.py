@@ -22,25 +22,24 @@ def get_assignments(input_data: list[float], centres: list[float]) -> np.array:
                 best_distance = distance
                 best_centre = list(centres).index(current_centre)
         assignments.append(best_centre)
-    assignments = np.array(assignments)
-    return assignments
+    return np.array(assignments)
 
-def get_colours(assign: np.array, number_of_inputs: int) -> list[str]:
+def get_colours(assignments: np.array, number_of_inputs: int) -> list[str]:
     colours: list[str] = []
     for current_input in range(number_of_inputs):
-        if assign[current_input] == 0:
+        if assignments[current_input] == 0:
             colours.append("firebrick")
-        elif assign[current_input] == 1:
+        elif assignments[current_input] == 1:
             colours.append("khaki")
-        elif assign[current_input] == 2:
+        elif assignments[current_input] == 2:
             colours.append("forestgreen")
-        elif assign[current_input] == 3:
+        elif assignments[current_input] == 3:
             colours.append("cornflowerblue")
-        elif assign[current_input] == 4:
+        elif assignments[current_input] == 4:
             colours.append("moccasin")
-        elif assign[current_input] == 5:
+        elif assignments[current_input] == 5:
             colours.append("violet")
-        elif assign[current_input] == 6:
+        elif assignments[current_input] == 6:
             colours.append("paleturquoise")
         else:
             colours.append("chocolate")
@@ -68,14 +67,14 @@ def main():
     # Initialize random centres from the data points given
     centres: list[float] = np.sort(random.sample(input_data, number_of_centres))
     # Assigns the points to clusters
-    assignments: list[int] = get_assignments(input_data, centres)
+    assignments: np.array = get_assignments(input_data, centres)
     # Colour the points based on their cluster
     colours: list[str] = get_colours(assignments, number_of_inputs)
     graph_data(input_data, centres, colours, number_of_centres, number_of_inputs)
 
 
-    current_assignments: list[int] = None
-    new_assignments: list[int] = assignments
+    current_assignments: np.array = None
+    new_assignments: np.array = assignments
 
     while current_assignments is None or not np.all(current_assignments == new_assignments):
         current_assignments = new_assignments

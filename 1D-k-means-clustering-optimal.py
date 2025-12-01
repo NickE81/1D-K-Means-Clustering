@@ -52,19 +52,22 @@ def update_centres(input_data: list[float], assignments: np.array) -> np.array:
     new_centres: list[int] = []
     number_of_centres: int = max(assignments) + 1
     for current_centre_index in range(number_of_centres):
-        inputs_in_cluster = [input_data[index] for index in np.nditer(np.asarray(np.equal(assignments, current_centre_index)).nonzero())]
+        inputs_in_cluster: list[float] = [input_data[index] for index in np.nditer(np.asarray(np.equal(assignments, current_centre_index)).nonzero())]
         cluster_min, cluster_max = min(inputs_in_cluster), max(inputs_in_cluster)
-        centre = (cluster_min + cluster_max) / 2
+        centre: float = (cluster_min + cluster_max) / 2
         new_centres.append(centre)
     return np.array(new_centres)
 
 def get_total_variance(input_data: list[float], assignments: np.array, centres: np.array) -> float:
-    number_of_clusters = max(assignments) + 1
-    total_variance = 0
+    number_of_clusters: int = max(assignments) + 1
+    total_variance: float = 0.0
     for current_cluster in range(number_of_clusters):
-        inputs_in_cluster = [input_data[index] for index in np.nditer(np.asarray(np.equal(assignments, current_cluster)).nonzero())]
-        variance = 0
-        number_of_inputs_in_cluster = len(inputs_in_cluster)
+        # Get all inputs where they are assigned to the current cluster
+        inputs_in_cluster: list[float] = [input_data[index] for index in np.nditer(
+                                            np.asarray(np.equal(assignments, current_cluster)).nonzero())]
+        
+        variance: float = 0.0
+        number_of_inputs_in_cluster: int = len(inputs_in_cluster)
         for current_input_from_cluster in inputs_in_cluster:
             variance += abs(current_input_from_cluster - centres[current_cluster])
         total_variance += variance / number_of_inputs_in_cluster
@@ -83,10 +86,10 @@ def main():
     random.shuffle(input_data)
     number_of_inputs = len(input_data)
 
-    optimal_centres_variances = []
+    optimal_centres_variances: list[float] = []
 
     for number_of_centres in range(1, MAX_CENTRES + 1):
-        centres_matrix = np.empty((TOTAL_ITERATIONS, number_of_centres))
+        centres_matrix: np.ndarray = np.empty((TOTAL_ITERATIONS, number_of_centres))
         total_variances = np.empty((TOTAL_ITERATIONS,))
         for iteration_index in range(TOTAL_ITERATIONS):
             # Initialize random centres from the data points given
@@ -107,11 +110,11 @@ def main():
             centres_matrix[iteration_index] = centres
             total_variances[iteration_index] = total_variance
 
-        optimal_variance_index = np.argmin(total_variances)
-        optimal_variance = min(total_variances)
-        optimal_centres = centres_matrix[optimal_variance_index]
-        optimal_assignments = get_assignments(input_data, optimal_centres)
-        optimal_colours = get_colours(optimal_assignments, number_of_inputs)
+        optimal_variance_index: int = np.argmin(total_variances)
+        optimal_variance: float = min(total_variances)
+        optimal_centres: list[float] = centres_matrix[optimal_variance_index]
+        optimal_assignments: np.array = get_assignments(input_data, optimal_centres)
+        optimal_colours: list[str] = get_colours(optimal_assignments, number_of_inputs)
         graph_data(input_data, optimal_centres, optimal_colours, number_of_centres, number_of_inputs)
         optimal_centres_variances.append(optimal_variance)
 
